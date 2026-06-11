@@ -1,10 +1,13 @@
 body {
   font-family: Arial, sans-serif;
   max-width: 900px;
-  margin: 50px auto;
+  margin: 20px auto;
+  padding: 10px;
+  box-sizing: border-box;
   text-align: center;
-background-color: #111827;
-color: white;}
+  background-color: #111827;
+  color: white;
+}
 h1 {
   margin-bottom: 30px;
 }
@@ -49,10 +52,6 @@ button:hover {
 p {
   color: #666;
   margin-bottom: 30px;
-}
-.card {
-  .card:hover {
-  transform: translateY(-4px);
 }
   transition: transform 0.2s;
   color: white;
@@ -133,7 +132,7 @@ footer {
   font-size: 14px;
 }
 h1 {
-  font-size: 72px;
+  font-size: clamp(36px, 8vw, 72px);
 }
 .card p {
   color: #e5e7eb;
@@ -205,5 +204,131 @@ select {
 
   to {
     transform: rotate(360deg);
+  }
+}
+@media (max-width: 768px) {
+
+  body {
+    margin: 15px;
+  }
+
+  h1 {
+    font-size: 40px;
+  }
+
+  input {
+    width: 90%;
+    max-width: 400px;
+  }
+
+  button {
+    width: 90%;
+    max-width: 400px;
+    margin: 5px 0;
+  }
+
+  .features {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .stats {
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .card {
+    width: 95%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  overflow-x: hidden;
+}
+@media (max-width: 768px) {
+
+  body {
+    padding: 15px;
+    margin: 0;
+  }
+
+  h1 {
+    font-size: 42px;
+  }
+
+  #input,
+  #channel {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .features,
+  .stats {
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .feature,
+  .stat {
+    width: 100%;
+    max-width: 320px;
+  }
+
+  button,
+  .copy-btn {
+    width: 100%;
+    max-width: 320px;
+    margin: 5px 0;
+  }
+
+  .card {
+    width: 100%;
+  }
+}
+@media (max-width: 768px) {
+
+  body {
+    margin: 0;
+    padding: 15px;
+  }
+
+  h1 {
+    font-size: 42px;
+  }
+
+  input {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .features,
+  .stats {
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .feature,
+  .stat {
+    width: 100%;
+    max-width: 320px;
+  }
+
+  button,
+  .copy-btn {
+    width: 100%;
+    max-width: 320px;
+    margin: 5px 0;
+  }
+
+  .card {
+    width: 100%;
+    box-sizing: border-box;
   }
 }
