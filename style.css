@@ -13,10 +13,10 @@ h1 {
 }
 
 input {
-  width: 300px;
-  padding: 10px;
+  width: 100%;
+  font-size: 18px;
+  padding: 16px;
 }
-
 button {
   padding: 10px 15px;
   cursor: pointer;
@@ -44,11 +44,10 @@ button:hover {
 #output {
   margin-top: 25px;
   text-align: left;
-}h1 {
-  font-size: 56px;
-  margin-bottom: 10px;
 }
-
+h1 {
+  font-size: 64px;
+}
 p {
   color: #666;
   margin-bottom: 30px;
@@ -152,9 +151,18 @@ h1 {
   transform: scale(1.05);
 }
 .card {
+  background: #1f2937;
+  color: white;
+  padding: 20px;
+  margin: 20px 0;
+  border-radius: 12px;
+  border: 1px solid #374151;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.15);
   transition: transform 0.2s;
+  #output {
+  max-width: 900px;
+  margin: 30px auto;
 }
-
 .card:hover {
   transform: translateY(-4px);
 }
@@ -331,4 +339,40 @@ html, body {
     width: 100%;
     box-sizing: border-box;
   }
+}
+@media (max-width: 768px) {
+
+  body {
+    padding: 15px;
+    margin: 0;
+  }
+
+  h1 {
+    font-size: 48px;
+  }
+
+  .card {
+    width: 100%;
+    margin-bottom: 15px;
+  }
+.features,
+.stats {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 15px;
+}
+button {
+  width: 100%;
+  margin: 6px 0;
+  padding: 16px;
+  font-size: 18px;
+}
+  input {
+    width: 100%;
+  }
+
+  #channel {
+    width: 100%;
+  }
+
 }
