@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Shorts AI Tool</title>
+<link rel="stylesheet" href="style.css"></head>
+<body>
+
+<h1>🚀 ClipBoost AI</h1>
+<p>Create viral Shorts ideas in seconds.</p>
+<p><small>Powered by AI-inspired idea generation</small></p><input id="input" placeholder="Enter a niche (gaming, basketball, dogs...)">
+<div class="features">
+  <div class="feature">⚡ Instant Shorts Ideas</div>
+  <div class="feature">🎯 Viral Hooks</div>
+  <div class="feature">🚀 AI-Powered Inspiration</div>
+</div>
+<div class="stats">
+  <div class="stat">
+    <h2>1000+</h2>
+    <p>Ideas Generated</p>
+  </div>
+
+  <div class="stat">
+    <h2>24/7</h2>
+    <p>Creator Inspiration</p>
+  </div>
+
+  <div class="stat">
+    <h2>AI</h2>
+    <p>Powered Suggestions</p>
+  </div>
+</div>
+<br><br>
+
+<input id="channel" placeholder="Or paste a YouTube channel (@channelname)">
+<button onclick="toggleDarkMode()">🌙 Dark Mode</button>
+<button onclick="generate()">🚀 Free Ideas</button>
+<button onclick="generateAI()">🤖 AI Pro Ideas</button><div id="output"></div>
+<h2>⭐ Saved Ideas</h2>
+    <button onclick="clearSavedIdeas()">🗑️ Clear All</button>
+<div id="savedIdeas"></div>
+  <script>
+function copyIdea(text) {
+  navigator.clipboard.writeText(text);
+  alert("✅ Idea copied to clipboard!");
+}let savedIdeas = [];
+function deleteSavedIdea(button) {
+  button.parentElement.remove();
+
+  localStorage.setItem(
+    "savedIdeas",
+    document.getElementById("savedIdeas").innerHTML
+  );
+}
+function saveIdea(title) {
+  document.getElementById("savedIdeas").innerHTML +=
+"<div class='card'>⭐ " + title +
+" <button onclick='deleteSavedIdea(this)'>❌</button></div>";  localStorage.setItem(
+    "savedIdeas",
+    document.getElementById("savedIdeas").innerHTML
+  );
+} 
+window.onload = function() {
+  let saved = localStorage.getItem("savedIdeas");
+
+  if (saved) {
+    document.getElementById("savedIdeas").innerHTML = saved;
+  }
+};
+function clearSavedIdeas() {
+  document.getElementById("savedIdeas").innerHTML = "";
+  localStorage.removeItem("savedIdeas");
+}
+function toggleDarkMode() {
+  document.body.classList.toggle("dark-mode");
+
+  localStorage.setItem(
+    "darkMode",
+    document.body.classList.contains("dark-mode")
+  );
+}
+
+window.addEventListener("load", () => {
+  if (localStorage.getItem("darkMode") === "true") {
+    document.body.classList.add("dark-mode");
+  }
+});
+async function generateAI() {
+  let input = document.getElementById("input").value;
+
+document.getElementById("output").innerHTML =
+  "<h2>🤖 Generating AI Ideas...</h2>" +
+  "<div class='spinner'></div>" +
+  "<p>This can take a few seconds...</p>";
+
+let response = await fetch(
+  "https://clipboost-ai.onrender.com/ideas/" +
+  encodeURIComponent(input)
+);
+  let data = await response.text();
+
+let ideas = data.split("===");
+
+document.getElementById("output").innerHTML =
+  "<h2>🤖 AI Ideas for " + input + "</h2>";
+
+ideas.forEach((idea, index) => {
+  document.getElementById("output").innerHTML +=
+    "<div class='card'>" +
+    "<h3>🤖 Idea #" + (index + 1) + "</h3>" +
+"<div style='white-space: pre-wrap; text-align:left;'>" +
+idea
+  .replace("TITLE:", "<b>🎬 Title:</b>")
+  .replace("HOOK:", "<br><b>🎯 Hook:</b>")
+  .replace("VIDEO:", "<br><b>📹 Video:</b>")
+  .replace("THUMBNAIL:", "<br><b>🖼️ Thumbnail:</b>") +
+"</div>" +
+"<button class='copy-btn' onclick='copyIdea(this.dataset.idea)' data-idea='" + idea.replace(/'/g, "&apos;") + "'>📋 Copy Idea</button>" +"<button class='copy-btn' onclick='saveIdea(\"" + idea.match(/TITLE:\s*(.*)/)?.[1] + "\")'>⭐ Save Idea</button>" +"</div>";
+});}
+async function generateChannelAI(channel) {
+  document.getElementById("output").innerHTML =
+    "<h2>📺 Analyzing Channel...</h2>" +
+    "<div class='spinner'></div>";
+
+let response = await fetch(
+  "https://clipboost-ai.onrender.com/channel/" + encodeURIComponent(channel)
+);
+  let data = await response.text();
+
+  let ideas = data.split("===");
+
+document.getElementById("output").innerHTML =
+  "<h2>📺 Channel Analysis: " + channel + "</h2>" +
+  "<p>AI-generated content ideas inspired by this creator.</p>";
+  ideas.forEach((idea, index) => {
+    document.getElementById("output").innerHTML +=
+      "<div class='card'>" +
+      "<h3>📺 Channel Idea #" + (index + 1) + "</h3>" +
+"<div style='white-space: pre-wrap; text-align:left;'>" +
+idea
+  .replace("TITLE:", "<b>🎬 Title:</b>")
+  .replace("HOOK:", "<br><b>🎯 Hook:</b>") +
+  "<button class='copy-btn' onclick='copyIdea(`" + idea + "`)'>📋 Copy Idea</button>" +
+  "<button class='copy-btn' onclick='saveIdea(\"" + idea.match(/TITLE:\\s*(.*)/)?.[1] + "\")'>⭐ Save Idea</button>" +
+"</div>" +      "</div>";
+  });
+}
+function generate() {
+        let input = document.getElementById("input").value.toLowerCase();
+        let channel = document.getElementById("channel").value;
+        if (channel !== "") {
+  generateChannelAI(channel);
+  return;
+}
+else if (input.includes("basketball")) {
+  document.getElementById("output").innerHTML =
+    "<h2>Basketball Ideas</h2>" +
+    "<p>1. I shot 100 three-pointers...</p>" +
+    "<p>2. The move nobody can guard...</p>" +
+    "<p>3. Can I make this impossible shot?</p>" +
+    "<p>4. The biggest basketball myth...</p>" +
+    "<p>5. One drill that improved my game...</p>";
+}
+else {
+let titles = [
+  "5 Things Nobody Knows About " + input,
+  "The Biggest " + input + " Mistake Everyone Makes",
+  "I Tested Viral " + input + " Hacks",
+  "Why Most People Fail At " + input,
+  "The Truth About " + input,
+  "I Let " + input + " Decide My Entire Day",
+  "This " + input + " Trick Changed Everything",
+  "Nobody Is Talking About This " + input + " Trend",
+  "I Tried The Most Viral " + input + " Challenge",
+  "What Happens If You Do " + input + " For 30 Days?"
+];
+  let randomTitle = titles[Math.floor(Math.random() * titles.length)];
+  let randomTitle2 = titles[Math.floor(Math.random() * titles.length)];
+    let randomTitle3 = titles[Math.floor(Math.random() * titles.length)];
+let randomTitle4 = titles[Math.floor(Math.random() * titles.length)];
+let randomTitle5 = titles[Math.floor(Math.random() * titles.length)];
+
+
+let hooks = [
+  "Nobody expected this...",
+  "This changed everything...",
+  "I couldn't believe the results...",
+  "Most people get this wrong...",
+  "The last one shocked me...",
+  "I wish I knew this sooner...",
+  "This went completely wrong...",
+  "You won't believe what happened next...",
+  "This secret changed my results...",
+  "Everyone is talking about this..."
+];
+  let randomHook = hooks[Math.floor(Math.random() * hooks.length)];
+  let randomHook2 = hooks[Math.floor(Math.random() * hooks.length)];
+let randomHook3 = hooks[Math.floor(Math.random() * hooks.length)];
+let randomHook4 = hooks[Math.floor(Math.random() * hooks.length)];
+let randomHook5 = hooks[Math.floor(Math.random() * hooks.length)];
+let thumbnails = [
+  "NOBODY KNEW THIS",
+  "YOU'RE DOING IT WRONG",
+  "THIS CHANGES EVERYTHING",
+  "DON'T MAKE THIS MISTAKE",
+  "NOBODY TALKS ABOUT THIS",
+  "I REGRET TRYING THIS",
+  "THIS ACTUALLY WORKED",
+  "BIGGEST SECRET REVEALED",
+  "WHAT HAPPENS NEXT?",
+  "I WAS SHOCKED"
+];
+  let randomThumbnail = thumbnails[Math.floor(Math.random() * thumbnails.length)];
+  let randomThumbnail2 = thumbnails[Math.floor(Math.random() * thumbnails.length)];
+  let randomThumbnail3 = thumbnails[Math.floor(Math.random() * thumbnails.length)];
+let randomThumbnail4 = thumbnails[Math.floor(Math.random() * thumbnails.length)];
+let randomThumbnail5 = thumbnails[Math.floor(Math.random() * thumbnails.length)];
+let videoIdeas = [
+  "Testing the most viral " + input + " trend.",
+  "Trying " + input + " for 30 days.",
+  "Reacting to the craziest " + input + " videos.",
+  "Ranking the best " + input + " tips.",
+  "Doing what everyone gets wrong about " + input + ".",
+  "Comparing cheap vs expensive " + input + ".",
+  "Trying every popular " + input + " hack.",
+  "The beginner's guide to " + input + ".",
+  "I spent 24 hours doing only " + input + ".",
+  "The biggest myths about " + input + "."
+];
+let randomVideoIdea = videoIdeas[Math.floor(Math.random() * videoIdeas.length)];
+let randomVideoIdea2 = videoIdeas[Math.floor(Math.random() * videoIdeas.length)];
+let randomVideoIdea3 = videoIdeas[Math.floor(Math.random() * videoIdeas.length)];
+let randomVideoIdea4 = videoIdeas[Math.floor(Math.random() * videoIdeas.length)];
+let randomVideoIdea5 = videoIdeas[Math.floor(Math.random() * videoIdeas.length)];
+
+  document.getElementById("output").innerHTML =
+    "<h2>" + input + " Shorts Package</h2>" +
+    "<hr>" +
+"<div class='card'>" +
+"<h3>Idea #1</h3>" +   "<p><b>Title:</b> " + randomTitle2 + "</p>" +
+    "<p><b>Hook:</b> " + randomHook2 + "</p>" +
+"<p><b>Video Idea:</b> " + randomVideoIdea2 + "</p>" +    "<p><b>Thumbnail:</b> " + randomThumbnail2 + "</p>"+
+"<button class='copy-btn' onclick='copyIdea(\"Title: " + randomTitle2 +
+" | Hook: " + randomHook2 +
+" | Video Idea: " + randomVideoIdea2 +
+" | Thumbnail: " + randomThumbnail2 + "\")'>📋 Copy Idea</button>" + 
+"<button class='copy-btn' onclick='saveIdea(\"" + randomTitle2 + "\")'>⭐ Save Idea</button>" +"<div class='card'>" +
+"<h3>Idea #2</h3>" +
+"<p><b>Title:</b> " + randomTitle + "</p>" +
+"<p><b>Hook:</b> " + randomHook + "</p>" +
+"<p><b>Video Idea:</b> " + randomVideoIdea + "</p>" + "<p><b>Thumbnail:</b> " + randomThumbnail + "</p>"+
+"<button class='copy-btn' onclick='copyIdea()'>📋 Copy Idea</button>" + "<button class='copy-btn' onclick='saveIdea(\"" + randomTitle + "\")'>⭐ Save Idea</button>" +
+"</div>" +
+"<div class='card'>" +
+"<h3>Idea #3</h3>" +
+"<p><b>Title:</b> " + randomTitle3 + "</p>" +
+"<p><b>Hook:</b> " + randomHook3 + "</p>" +
+"<p><b>Video Idea:</b> " + randomVideoIdea3 + "</p>" +
+"<p><b>Thumbnail:</b> " + randomThumbnail3 + "</p>" +
+"<button class='copy-btn' onclick='copyIdea()'>📋 Copy Idea</button>" + "<button class='copy-btn' onclick='saveIdea(\"" + randomTitle3 + "\")'>⭐ Save Idea</button>" +
+"</div>" +"<div class='card'>" +
+"<h3>Idea #4</h3>" +
+"<p><b>Title:</b> " + randomTitle4 + "</p>" +
+"<p><b>Hook:</b> " + randomHook4 + "</p>" +
+"<p><b>Video Idea:</b> " + randomVideoIdea4 + "</p>" +"<p><b>Thumbnail:</b> " + randomThumbnail4 + "</p>" +
+"<button class='copy-btn' onclick='copyIdea()'>📋 Copy Idea</button>" + "<button class='copy-btn' onclick='saveIdea(\"" + randomTitle4 + "\")'>⭐ Save Idea</button>" +
+"</div>"+
+"<div class='card'>" +
+"<h3>Idea #5</h3>" +"<p><b>Title:</b> " + randomTitle5 + "</p>" +
+"<p><b>Hook:</b> " + randomHook5 + "</p>" +
+"<p><b>Video Idea:</b> " + randomVideoIdea5 + "</p>" + "<p><b>Thumbnail:</b> " + randomThumbnail5 + "</p>" +
+"<button class='copy-btn' onclick='copyIdea()'>📋 Copy Idea</button>" + "<button class='copy-btn' onclick='saveIdea(\"" + randomTitle5 + "\")'>⭐ Save Idea</button>" +
+"</div>";
+}
+    }
+  </script>
+<footer>
+  <p>© 2026 ClipBoost AI • Built by Beaux 🚀</p>
+</footer>
+</body>
+</html>
